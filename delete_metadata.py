@@ -1,7 +1,7 @@
 import json
 
 # 변경하려는 파일 경로
-file_path = "./week3/DistilBERT.ipynb"
+file_path = "/Users/semyungpark/Documents/homework/week3/2. DistilBERT.ipynb"
 
 # 파일 읽기
 with open(file_path, 'r', encoding='utf-8') as file:
