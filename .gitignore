@@ -1,3 +1,6 @@
-
 /data
 /week2/best_model.pt
+# 모든 .env 파일 무시
+*.env
+.env
+.env.*
