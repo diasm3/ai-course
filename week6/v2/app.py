@@ -263,8 +263,5 @@ if st.session_state.images:
             # Add assistant response to chat history
             st.session_state.chat_history.append({"role": "assistant", "content": response})
         
-        # Clear input
-        st.session_state.user_input = ""
-        
         # Rerun to update UI
         st.rerun()

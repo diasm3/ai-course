@@ -163,9 +163,6 @@ def handle_user_input(user_input):
     
     # Update token count
     st.session_state.token_count += response_data["tokens_used"]
-    
-    # Clear input
-    st.session_state.user_input = ""
 
 # Main layout
 def render_sidebar():
@@ -211,17 +208,35 @@ def render_sidebar():
         "Describe the environment in these images.",
         "What colors are most prominent in these images?",
     ]
-    
+
+    # 샘플 질문을 처리하는 별도 함수
+    def handle_sample_question(question):
+        # 유저 메시지 추가
+        if "last_question" not in st.session_state or st.session_state.last_question != question:
+            st.session_state.last_question = question
+            st.session_state.chat_history.append({"role": "user", "content": question})
+            
+            # AI 응답 획득
+            if st.session_state.image_bytes:
+                response_data = get_gpt_vision_response(
+                    question, 
+                    st.session_state.image_bytes,
+                    client=client
+                )
+                
+                # 어시스턴트 응답 추가
+                st.session_state.chat_history.append({"role": "assistant", "content": response_data["text"]})
+                
+                # 토큰 카운트 업데이트
+                st.session_state.token_count += response_data["tokens_used"]
+
+    # 하나의 질문만 처리하도록 처리
     for question in sample_questions:
         if st.sidebar.button(
             question, 
             key=f"sample_{question}"
         ):
-            # Set user input
-            st.session_state.user_input = question
-            # Process input
-            handle_user_input(question)
-            # Force refresh
+            handle_sample_question(question)
             st.rerun()
     
     # API information
